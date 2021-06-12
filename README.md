@@ -1,1 +1,1 @@
-# RDLC Report in ASP.NET CORE 5
+# RDLC Report in ASP.NET Core 5
