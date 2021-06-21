@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Reports\rptDepartment.rdlc" />
+    <Content Remove="wwwroot\Reports\rptDeptEmp.rdlc" />
     <Content Remove="wwwroot\Reports\rptEmployee.rdlc" />
   </ItemGroup>
 
@@ -13,6 +15,12 @@
     <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="AspNetCore.ReportingServices" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.CodeDom" Version="5.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
@@ -21,10 +29,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Reports\rptDepartment.rdlc" />
+    <None Include="wwwroot\Reports\rptDeptEmp.rdlc" />
     <None Include="wwwroot\Reports\rptEmployee.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="DemoRDLCDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DemoRDLCDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="ReportDataSet\dsDepartment.Designer.cs">
+      <DependentUpon>dsDepartment.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="ReportDataSet\dsEmployee.Designer.cs">
       <DependentUpon>dsEmployee.xsd</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -33,6 +53,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DemoRDLCDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DemoRDLCDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="ReportDataSet\dsDepartment.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsDepartment.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
     <None Update="ReportDataSet\dsEmployee.xsd">
       <SubType>Designer</SubType>
       <LastGenOutput>dsEmployee.Designer.cs</LastGenOutput>

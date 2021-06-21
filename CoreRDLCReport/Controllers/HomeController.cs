@@ -1,4 +1,5 @@
 ﻿using AspNetCore.Reporting;
+using CoreRDLCReport.Data;
 using CoreRDLCReport.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +15,17 @@ namespace CoreRDLCReport.Controllers
 {
     public class HomeController : Controller
     {
-
+        private readonly CoreRDLCReportContext _context;
         public IWebHostEnvironment _webHostEnvironment { get; }
 
-        public HomeController(IWebHostEnvironment webHostEnvironment)
+        public HomeController(IWebHostEnvironment webHostEnvironment,
+            CoreRDLCReportContext context)
         {
             _webHostEnvironment = webHostEnvironment;
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            _context = context;
         }
+
 
         public IActionResult Index()
         {
@@ -39,6 +43,74 @@ namespace CoreRDLCReport.Controllers
             localReport.AddDataSource("dsEmployee", dt);
             var result = localReport.Execute(RenderType.Pdf, extension, parameters, mimetype);
             return File(result.MainStream, "application/pdf");
+        }
+
+        public IActionResult DepartmentReport()
+        {
+            var dt = GetDepartmentList();
+            string mimetype = "";
+            int extension = 1;
+            var path = $"{_webHostEnvironment.WebRootPath}\\Reports\\rptDepartment.rdlc";
+            //Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //parameters.Add("prm", "RDLC Report");
+            LocalReport localReport = new LocalReport(path);
+            localReport.AddDataSource("dsDepartment", dt);
+            var result = localReport.Execute(RenderType.Pdf, extension, null, mimetype);
+            return File(result.MainStream, "application/pdf");
+        }
+
+        public IActionResult DeptEmpReport()
+        {
+            var dt = GetDeptEmpList();
+            string mimetype = "";
+            int extension = 1;
+            var path = $"{_webHostEnvironment.WebRootPath}\\Reports\\rptDeptEmp.rdlc";
+            //Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //parameters.Add("prm", "RDLC Report");
+            LocalReport localReport = new LocalReport(path);
+            localReport.AddDataSource("DataSet1", dt);
+            var result = localReport.Execute(RenderType.Pdf, extension, null, mimetype);
+            return File(result.MainStream, "application/pdf");
+        }
+
+        private DataTable GetDeptEmpList()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("Name");
+            dt.Columns.Add("Phone");
+            dt.Columns.Add("EmpName");
+            dt.Columns.Add("Department");
+            foreach (var item in _context.Department)
+            {
+                dt.Rows.Add(item.Name, item.Phone, "AAA", "BBB");
+            }
+            //var obj = new[] { "A", "B", "C", "D" };
+            //dt.Rows.Add(obj);
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    dt.Rows.Add("Computer Science", "05333666", "Hashim Almansouri", "IT");
+            //}
+            return dt;
+        }
+
+        private DataTable GetDepartmentList()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("Id");
+            dt.Columns.Add("Name");
+            dt.Columns.Add("Phone");
+
+            DataRow row;
+            var departments = _context.Department.ToList();
+            foreach (var item in departments)
+            {
+                row = dt.NewRow();
+                row["Id"] = item.Id;
+                row["Name"] = item.Name;
+                row["Phone"] = item.Phone;
+                dt.Rows.Add(row);
+            }
+            return dt;
         }
 
         private DataTable GetEmployeeList()

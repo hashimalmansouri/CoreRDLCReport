@@ -7,18 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="ReportDataSet\dsEmployee.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>dsEmployee.xsd</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ReportDataSet\dsEmployee.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dsEmployee.Designer.cs</LastGenOutput>
-    </None>
+    <Folder Include="ReportDataSet\" />
   </ItemGroup>
 
 </Project>
